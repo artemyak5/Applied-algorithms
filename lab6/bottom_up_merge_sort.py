@@ -1,10 +1,6 @@
-comparison_count = 0
-copy_count = 0
+from counters import Counter
 
-def merge(arr, left, mid, right):
-    global comparison_count
-    global copy_count
-
+def merge(arr, left, mid, right, counter):
     n1 = mid - left + 1
     n2 = right - mid
 
@@ -15,33 +11,30 @@ def merge(arr, left, mid, right):
     k = left
 
     while i < n1 and j < n2:
-        comparison_count += 1
+        counter.comparison_count += 1
         if L[i] <= R[j]:
             arr[k] = L[i]
-            copy_count += 1
+            counter.copy_count += 1
             i += 1
         else:
             arr[k] = R[j]
-            copy_count += 1
+            counter.copy_count += 1
             j += 1
         k += 1
 
     while i < n1:
         arr[k] = L[i]
-        copy_count += 1
+        counter.copy_count += 1
         i += 1
         k += 1
 
     while j < n2:
         arr[k] = R[j]
-        copy_count += 1
+        counter.copy_count += 1
         j += 1
         k += 1
 
-def merge_sort(arr):
-    global comparison_count
-    global copy_count
-
+def merge_sort(arr, counter):
     n = len(arr)
     curr_size = 1
 
@@ -50,6 +43,6 @@ def merge_sort(arr):
         while left < n-1:
             mid = min((left + curr_size - 1), n - 1)
             right = min((left + 2 * curr_size -1), n - 1)
-            merge(arr, left, mid, right)
+            merge(arr, left, mid, right, counter)
             left += 2 * curr_size
         curr_size *= 2
